@@ -1,8 +1,5 @@
 import java.net.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class server{
     public static void main(){
@@ -10,12 +7,15 @@ public class server{
             ServerSocket sock = new ServerSocket(6013);
             while(true){
                 Socket client = sock.accept();
-                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-                out.println(new java.util.Date().toString());
-                client.clos
+                InputStreamReader is = new InputStreamReader(client.getInputStream());
+                OutputStream os = client.getOutputStream();
+                PrintWriter out = new PrintWriter(os, true);
+                BufferedReader in = new BufferedReader(is);
+                out.println(in);
+                client.close();
             }
         }catch(IOException e){
-            
+            System.err.println(e.getMessage());
         }
     }
 }
